@@ -193,7 +193,6 @@ export async function createCollectiveFromGithub(_, args, req) {
   const collectiveData = { ...args.collective };
   const user = req.remoteUser;
   const githubHandle = collectiveData.githubHandle;
-  console.log(user);
 
   // For e2e testing, we enable testuser+(admin|member)@opencollective.com to create collective without github validation
   if (process.env.NODE_ENV !== 'production' && user.email.match(/.*test.*@opencollective.com$/)) {
@@ -207,7 +206,6 @@ export async function createCollectiveFromGithub(_, args, req) {
     collectiveData.currency = 'USD';
     collectiveData.CreatedByUserId = user.id;
     collectiveData.LastEditedByUserId = user.id;
-    console.log(collectiveData);
     collective = await models.Collective.create(collectiveData);
     const host = await models.Collective.findByPk(defaultHostCollective('opensource').CollectiveId);
     const promises = [
@@ -217,7 +215,6 @@ export async function createCollectiveFromGithub(_, args, req) {
     ];
 
     await Promise.all(promises);
-    console.log(collective);
     return collective;
   }
 
